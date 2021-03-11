@@ -55,9 +55,28 @@ app.post('/signin', async (req, res) => {
 	try {
 		const user = await Users.findOne ({ username: username })
 		console.log('user after saved', user);
+		// compare the plain text password we pulled off of the req.authorization header
+		// and compare it with the plan text password of the user
+		// if valid, "valid" will be true
+		const valid = await bcrypt.compare(password, user.password);
 
-		const
+		if (valid) {
+			res.status(200).json({ loggedIn: true });
+		}
+	} catch {
+		console.error('user could not be retrieved');
 	}
-}
 
+
+	console.log(base64.encode('user1:coolpw'));
+
+	mongoose.connect('mongodb://localhost:27017/your-db-name-goes-here', { useNewUrlParser: true, useUnifiedTopology: true })
+	.then(() => {
+		app.listen(PORT, () => {
+			console.log('server up:', PORT);
+		});
+	})
+	.catch(e => console.error('db error', e.message));
+
+});
 
