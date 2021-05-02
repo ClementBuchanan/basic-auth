@@ -7,7 +7,7 @@ const options = {
   useCreatendex: true,
   useUnifiedTopology: true,
 };
-mongoose.connect(process.env.MONGODB_URI, options);
+mongoose.connect(process.env.URI, options);
 
 
 //start web server
