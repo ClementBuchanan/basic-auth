@@ -6,20 +6,22 @@ const base64 = require('base-64');
 
 module.exports = async (req, res, next) => {
   if (!req.headers.authorization) {
-    next('no headers found');
+    return next('no headers found');
   }
+  console.log()
   const authPieces = req.headers.authorization.split(' ').pop();
   const [username, password] = base64.decode(authPieces).split(':');
+  console.log(username, password);
   const [user] = await users.find({ username });
 
   if (!user) {
-    next('User not found');
+    return next('User not found');
   }
   const validatedUser = await user.comparePasswords(password);
 
   if (validatedUser) {
     req.user = user
-    next()
+    return next()
   }
-  next('Invalid user')
+  return next('Invalid user')
 }
